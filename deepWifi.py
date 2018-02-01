@@ -88,4 +88,4 @@ d.fit(train_X, train_X, nb_epoch=nb_epochs, batch_size=batch_size)
 c = classifier(d)
 c.fit(train_X, train_y, validation_data=(val_X, val_y), nb_epoch=nb_epochs, batch_size=batch_size)
 loss, acc = c.evaluate(test_AP_features, test_labels)
-print loss, acc
+print (loss, acc)
