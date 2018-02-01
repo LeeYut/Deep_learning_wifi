@@ -56,9 +56,9 @@ num_classes = 98
 
 e = encoder()
 d = decoder(e)
-d.fit(train_X, train_X, nb_epoch=nb_epochs, batch_size=batch_size)
+d.fit(train_AP_features, train_labels, nb_epoch=nb_epochs, batch_size=batch_size)
 c = classifier(d)
-c.fit(train_X, train_y, nb_epoch=nb_epochs, batch_size=batch_size)
+c.fit(train_AP_features, train_labels, nb_epoch=nb_epochs, batch_size=batch_size)
 loss, acc = c.evaluate(test_AP_features, test_labels)
 print (loss, acc)
 #result = c.predict(val_X)
