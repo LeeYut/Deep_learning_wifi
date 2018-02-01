@@ -1,3 +1,5 @@
+ # -*- coding: utf-8 -*-     
+
 import pandas as pd
 import tensorflow as tf
 import numpy as np
@@ -34,8 +36,9 @@ def classifier(d):
 
 
 path_train = "radioMap.csv"
-path_validation = "wifi_4th_floor_test.csv"
+path_validation = "test.csv"
 
+#以下的部分是用来生成ground truth的
 #Explicitly pass header=0 to be able to replace existing names 
 train_df = pd.read_csv(path_train,header = 0)
 train_AP_strengths = train_df.ix[:,:185] #select first 520 columns
@@ -46,6 +49,12 @@ train_labels = np.asarray(train_df.ix[:,185])
 #train_labels_encoding = zeros((98, 98))
 train_labels = to_categorical(train_labels)
 
+#一下生成我们需要的测试data吧
+test_df = pd.read_csv(path_validation, header = 0)
+test_AP_strengths = test_df.ix[:,:185] #select first 520 columns
+
+#Scale transforms data to center to the mean and component wise scale to unit variance
+test_AP_features = scale(np.asarray(test_AP_strengths))
 
 
 
@@ -61,7 +70,7 @@ c = classifier(d)
 c.fit(train_AP_features, train_labels, nb_epoch=nb_epochs, batch_size=batch_size)
 loss, acc = c.evaluate(train_AP_features, train_labels)
 print (loss, acc)
-#result = c.predict(val_X)
-#result_new = np.argmax(result, axis=1)
-#print (result_new[:10])
+result = c.predict(test_AP_features)
+result_new = np.argmax(result, axis=1)
+print (result_new)
 #print (np.argmax(val_y, axis=1)[:10])
